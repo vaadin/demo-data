@@ -22,6 +22,11 @@ public class RESTController {
     @Autowired
     Languages languages;
 
+    @RequestMapping("/")
+    public String root(){
+        return "Demo data REST end point. Check out /people, /countries or /languages";
+    }
+
     @RequestMapping("/people")
     public Map<String, Object> getRandomPeople(@RequestParam(value = "index", required = false, defaultValue = "0") int index,
                                                @RequestParam(value = "count", required = false, defaultValue = "50") int count) {
