@@ -1,36 +1,40 @@
 package com.vaadin.demodata;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import javax.ejb.Singleton;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@CrossOrigin
+@Singleton
+@Path("/1.0")
 public class RESTController {
 
-    @Autowired
+    @Inject
     People people;
-    @Autowired
+    @Inject
     Countries countries;
-    @Autowired
+    @Inject
     Languages languages;
 
-    @RequestMapping("/")
-    public String root(){
+    @GET
+    @Path("/")
+    @Produces({MediaType.TEXT_PLAIN})
+    public String root() {
         return "Demo data REST end point. Check out /people, /countries or /languages";
     }
 
-    @RequestMapping("/people")
-    public Map<String, Object> getRandomPeople(@RequestParam(value = "index", required = false, defaultValue = "0") int index,
-                                               @RequestParam(value = "count", required = false, defaultValue = "50") int count) {
+    @GET
+    @Path("/people")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Map<String, Object> getRandomPeople(@QueryParam("index") @DefaultValue("0") Integer index,
+                                               @QueryParam("count") @DefaultValue("50") Integer count) {
         List<Person> personList = this.people.getPeople();
+
+
         int size = personList.size();
         int end = index + count;
 
@@ -38,19 +42,23 @@ public class RESTController {
             end = size;
         }
 
-        HashMap<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         result.put("size", size);
         result.put("result", personList.subList(index, end));
 
         return result;
     }
 
-    @RequestMapping("/countries")
+    @GET
+    @Path("/countries")
+    @Produces({MediaType.APPLICATION_JSON})
     public List<String> getCountries() {
         return countries.getCountries();
     }
 
-    @RequestMapping("/languages")
+    @GET
+    @Path("/languages")
+    @Produces({MediaType.APPLICATION_JSON})
     public List<String> getLanguages() {
         return languages.getLanguages();
     }

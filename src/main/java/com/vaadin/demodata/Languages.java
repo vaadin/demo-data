@@ -1,12 +1,10 @@
 package com.vaadin.demodata;
 
 
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+
 public class Languages {
 
     private List<String> languages = Arrays.asList(

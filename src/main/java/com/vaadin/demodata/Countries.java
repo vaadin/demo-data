@@ -1,13 +1,10 @@
 package com.vaadin.demodata;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
+import javax.ejb.Singleton;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
-@Scope("singleton")
+@Singleton
 public class Countries {
     private List<String> countries = Arrays.asList("Andorra",
             "United Arab Emirates",

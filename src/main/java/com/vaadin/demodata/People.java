@@ -1,25 +1,20 @@
 package com.vaadin.demodata;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Component
-@Scope("singleton")
 public class People {
 
     public static final int NUM_PEOPLE = 200;
     private List<Person> people = new ArrayList<>(NUM_PEOPLE);
 
-    @Autowired
+    @Inject
     Names names;
 
-    @Autowired
+    @Inject
     Addresses addresses;
 
 

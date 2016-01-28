@@ -1,6 +1,5 @@
 package com.vaadin.demodata;
 
-
 public class Address {
 
     private String street;

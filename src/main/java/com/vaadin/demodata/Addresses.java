@@ -1,17 +1,12 @@
 package com.vaadin.demodata;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import java.util.ArrayList;
 import java.util.Random;
 
-@Component
-@Scope("singleton")
+@Singleton
 public class Addresses {
-
-
 
     private String[][] rawData = {{"4721 Noble Maze", "Kalifornsky", "Nevada", "89270-4436", "USA", "(702) 055-8425"},
             {"6013 Grand Hills Key", "King Salmon", "Idaho", "83765-8184", "USA", "(208) 949-4624"},

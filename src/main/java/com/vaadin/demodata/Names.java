@@ -1,12 +1,9 @@
 package com.vaadin.demodata;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
+import javax.ejb.Singleton;
 import java.util.Random;
 
-@Component
-@Scope("singleton")
+@Singleton
 public class Names {
 
     private Random random = new Random();
