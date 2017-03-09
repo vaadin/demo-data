@@ -4,10 +4,8 @@ package com.vaadin.demodata;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.ws.rs.core.*;
+import java.util.*;
 
 @Singleton
 @Path("/1.0")
@@ -30,10 +28,57 @@ public class RESTController {
     @GET
     @Path("/people")
     @Produces({MediaType.APPLICATION_JSON})
-    public Map<String, Object> getRandomPeople(@QueryParam("index") @DefaultValue("0") Integer index,
-                                               @QueryParam("count") @DefaultValue("50") Integer count) {
-        List<Person> personList = this.people.getPeople();
+    public Map<String, Object> getRandomPeople(
+            @QueryParam("index") @DefaultValue("0") Integer index,
+            @QueryParam("count") @DefaultValue("50") Integer count,
+            @QueryParam("filters[firstName]") String firstNameFilter,
+            @QueryParam("filters[lastName]") String lastNameFilter,
+            @QueryParam("orders[]") final List<String> orders) {
+        List<Person> personList = new ArrayList<Person>();
 
+        for (Person person : people.getPeople()) {
+            if (firstNameFilter != null && !person.getFirstName().toUpperCase().contains(firstNameFilter.toUpperCase())) continue;
+            if (lastNameFilter != null && !person.getLastName().toUpperCase().contains(lastNameFilter.toUpperCase())) continue;
+            personList.add(person);
+        }
+
+        Collections.reverse(orders);
+        for (String sortOrder : orders) {
+            switch (sortOrder) {
+                case "firstName asc":
+                    personList.sort(new Comparator<Person>() {
+                        @Override
+                        public int compare(Person o1, Person o2) {
+                            return o1.getFirstName().compareTo(o2.getFirstName());
+                        }
+                    });
+                    break;
+                case "firstName desc":
+                    personList.sort(new Comparator<Person>() {
+                        @Override
+                        public int compare(Person o1, Person o2) {
+                            return o2.getFirstName().compareTo(o1.getFirstName());
+                        }
+                    });
+                    break;
+                case "lastName asc":
+                    personList.sort(new Comparator<Person>() {
+                        @Override
+                        public int compare(Person o1, Person o2) {
+                            return o1.getLastName().compareTo(o2.getLastName());
+                        }
+                    });
+                    break;
+                case "lastName desc":
+                    personList.sort(new Comparator<Person>() {
+                        @Override
+                        public int compare(Person o1, Person o2) {
+                            return o2.getLastName().compareTo(o1.getLastName());
+                        }
+                    });
+                    break;
+            }
+        }
 
         int size = personList.size();
         int end = index + count;
