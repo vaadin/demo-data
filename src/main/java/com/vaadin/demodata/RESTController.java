@@ -46,36 +46,16 @@ public class RESTController {
         for (String sortOrder : orders) {
             switch (sortOrder) {
                 case "firstName asc":
-                    personList.sort(new Comparator<Person>() {
-                        @Override
-                        public int compare(Person o1, Person o2) {
-                            return o1.getFirstName().compareTo(o2.getFirstName());
-                        }
-                    });
+                    personList.sort((o1, o2) -> o1.getFirstName().compareTo(o2.getFirstName()));
                     break;
                 case "firstName desc":
-                    personList.sort(new Comparator<Person>() {
-                        @Override
-                        public int compare(Person o1, Person o2) {
-                            return o2.getFirstName().compareTo(o1.getFirstName());
-                        }
-                    });
+                    personList.sort((o1, o2) -> o2.getFirstName().compareTo(o1.getFirstName()));
                     break;
                 case "lastName asc":
-                    personList.sort(new Comparator<Person>() {
-                        @Override
-                        public int compare(Person o1, Person o2) {
-                            return o1.getLastName().compareTo(o2.getLastName());
-                        }
-                    });
+                    personList.sort((o1, o2) -> o1.getLastName().compareTo(o2.getLastName()));
                     break;
                 case "lastName desc":
-                    personList.sort(new Comparator<Person>() {
-                        @Override
-                        public int compare(Person o1, Person o2) {
-                            return o2.getLastName().compareTo(o1.getLastName());
-                        }
-                    });
+                    personList.sort((o1, o2) -> o2.getLastName().compareTo(o1.getLastName()));
                     break;
             }
         }
