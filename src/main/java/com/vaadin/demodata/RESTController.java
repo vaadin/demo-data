@@ -22,7 +22,7 @@ public class RESTController {
     @Path("/")
     @Produces({MediaType.TEXT_PLAIN})
     public String root() {
-        return "Demo data REST end point. Check out /people, /countries or /languages";
+        return "Demo data REST end point. Check out /people, /countries, /filtered-countries or /languages";
     }
 
     @GET
@@ -79,6 +79,34 @@ public class RESTController {
     @Produces({MediaType.APPLICATION_JSON})
     public List<String> getCountries() {
         return countries.getCountries();
+    }
+
+    @GET
+    @Path("/filtered-countries")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Map<String, Object> getCountries(
+            @QueryParam("index") @DefaultValue("0") Integer index,
+            @QueryParam("count") @DefaultValue("50") Integer count,
+            @QueryParam("filter") String countryFilter) {
+        List<String> countryList = new ArrayList<String>();
+
+        for (String country : countries.getCountries()) {
+            if (countryFilter != null && !country.toUpperCase().contains(countryFilter.toUpperCase())) continue;
+            countryList.add(country);
+        }
+
+        int size = countryList.size();
+        int end = index + count;
+
+        if (end > size) {
+            end = size;
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("size", size);
+        result.put("result", countryList.subList(index, end));
+
+        return result;
     }
 
     @GET
